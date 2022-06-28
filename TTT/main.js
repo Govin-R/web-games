@@ -12,10 +12,14 @@ const default_val = {
 	"r3":[0,0,0], 	}
 
 startGame();
+let player=1;
+
 function startGame(){
 	boxes.forEach((e)=>{
 		e.setAttribute("value",0);
-		e.addEventListener('click',(a)=>{play(a)});
+		e.addEventListener("click",()=>{
+		 // e.setAttribute('value',-1)
+		  play(e); })
 	});
 	openentScore.innerText=0;
 	yourScore.innerText=0;
@@ -23,20 +27,26 @@ function startGame(){
 };
 
 
+
 function play(a){
-	console.log(a);
-	let r1val= rowVal(r1);
-//	let r2val= rowVal(r2);
-//	let r3val= rowVal(r3);
-	function rowVal(it){
-		let arr = [];
-		for(let i = 0; i<it.length; i++){
-			arr.push(Number(it[i].getAttribute("value")));
-			console.log(it[i],it)
-		};
-		return arr;
-	};
-	//	console.log(r1val,r2val,r3val)
+  
+  if(player===0){
+    a.setAttribute('value',-1);
+  }else if(player===1){
+    a.setAttribute('value',1);
+  }
+  
+  
+  let currentVal =  [[],[],[]];
+  for(let i = 0; i<3;i++){
+    [r1,r2,r3][i].forEach((e2)=> {
+      //console.log(e2,i)
+      currentVal[i].push(e2.getAttribute('value'));
+    })
+  };
+  console.table(currentVal)
+	
+	
 	
 }
 
