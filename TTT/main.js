@@ -6,11 +6,6 @@ const r1 = document.querySelectorAll(".r1");
 const r2 = document.querySelectorAll(".r2");
 const r3 = document.querySelectorAll(".r3");
 
-const default_val = {
-	"r1":[0,0,0],
-	"r2":[0,0,0],
-	"r3":[0,0,0], 	}
-
 startGame();
 let player=1;
 
@@ -28,7 +23,7 @@ function startGame(){
 
 const color = ["openentClick","userClick"];
 const score = [openentScore,yourScore];
-const winPossiblities = [["0",'1','2'],['0','4','8'],['0','3','6'],['1','4','7'],['2','5','8'],['3','4','5'],['6','7','8'],['2','4','6']];
+let winPossiblities = [["0",'1','2'],['0','4','8'],['0','3','6'],['1','4','7'],['2','5','8'],['3','4','5'],['6','7','8'],['2','4','6']];
 let yClicked = Array();
 let oClicked = Array();
 let clicked = [];
@@ -48,19 +43,8 @@ function play(a){
 			yClicked.push(a.id);
 			clicked.push(a.id);
   	}
-  
-  /*
- 	 	let currentVal =  [[],[],[]];
-  	for(let i = 0; i<3;i++){
-    	[r1,r2,r3][i].forEach((e2)=> {
-      	//console.log(e2,i)
-      	currentVal[i].push(e2.getAttribute('value'));
-    	})
- 	 };
-		//console.table(currentVal);
-		*/
-		//get mark analyze
-		
+  	
+		//get mark analyze	
 		for(let i = 0; i<winPossiblities.length; i++){
 			let tempPosible = winPossiblities[i];
 			let user=[oClicked,yClicked][player];
@@ -70,8 +54,10 @@ function play(a){
 					tempCheck.push(true);
 				}
 			}
-			console.log(tempCheck);
 			if(tempCheck.length===3){
+				console.log(tempCheck);
+				winPossiblities.splice(winPossiblities.indexOf(tempCheck),1);
+				console.log(winPossiblities)
 					score[player].innerText=Number(score[player].innerText)+1;
 			}
 		}
@@ -80,7 +66,6 @@ function play(a){
 			player=0;
 		}else{player=1;};
 
-	
 
 
 	}
