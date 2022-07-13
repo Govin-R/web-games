@@ -20,14 +20,46 @@
 		canvas{
 		/*	box-shadow:black 20px 10px 50px;*/
 
-			border:0.3rem solid black;
+			border:2px solid black;
 		}
 		
+		#buttons{
+		  width:100vw;
+		  display:grid;
+		  grid-template-rows: auto auto auto;
+		  grid-gap: 1rem;
+		  place-items: center;
+		}
+		#left{
+		  
+		}
+		#right{
+		  
+		}
+		#rl{
+		  display:flex;
+		  flex-direction: row-reverse;
+		}
+		
+		@media(min-width:400px){
+		  #buttons{
+		    visibility: hidden;
+		  }
+		}
 		
 	</style>
 	<body>
 		<div id="root">
 			<canvas id="game" height="300" width="300"></canvas>
+			<div id="buttons">
+			  <button id="up" class="buttons">up</button>
+			  <div id="rl">
+			  <button id="right" class="buttons" >right</button>
+			 
+			  <button id="left" class="buttons">left</button>
+			  </div>
+			   <button id="down" class="buttons" >down</button>
+			</div>
 		</div>
 
 
