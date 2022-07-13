@@ -3,8 +3,8 @@ const cv = document.getElementById('game');
 const ctx = cv.getContext('2d');
 
 //snake description
-let tileCount=20;				//split each size of total
-let tileSize=20;				// size of snake(creature)
+let tileCount=15;				//split each size of total
+let tileSize=15;				// size of snake(creature)
 let headX = 2;					// indexing x point
 let headY = 1;					// indexing y point
 const snakeParts = []  	// array for snake parts
@@ -24,29 +24,29 @@ document.body.addEventListener("keydown",keyAction);
 function keyAction(event){
 	//up
 	if(event.keyCode == 38){
-		if(velocityY==0.2){			//prevent from oposite side movement
+		if(velocityY==1){			//prevent from oposite side movement
 			return;
 		}
-		velocityY=-0.2;
+		velocityY=-1;
 		velocityX=0;
 	}
 	//down 
 	if(event.keyCode == 40){
-		if(velocityY==-0.2){return;}
-		velocityY=0.2;
+		if(velocityY==-1){return;}
+		velocityY=1;
 		velocityX=0;
 	}
 	//left
 	if(event.keyCode== 37){
-		if(velocityX==0.2){return;}
-		velocityX =-0.2;
+		if(velocityX==1){return;}
+		velocityX =-1;
 		velocityY=0;
 	
 	}
 	//right
 	if(event.keyCode==39){
-		if(velocityX==-0.2){return;}
-		velocityX=0.2;
+		if(velocityX==-1){return;}
+		velocityX=1;
 		velocityY=0;
 	}
 }
@@ -57,11 +57,20 @@ class snakePart{
 		this.y = y;
 	}
 }
+snakeParts.push(new snakePart(headX,headY));
+
 function drawGame(){
-	let speed = 27;
+
+	changePlace();
+	let result=gameOver();
+	console.log(result)
+	if(result){
+		return;
+	}
+
+	let speed = 9;
 	clearScreen();
 	drawSnake();
-	changePlace();
 	collitionCheck();
 	drawFood();
 	
@@ -78,13 +87,16 @@ function clearScreen(){
 
 function drawSnake(){
 	ctx.fillStyle="black";
-	for(let i=0;i<snakeParts.length;i++){
-		let part=snakeParts[i];
-		ctx.fillRect(part.x*tileCount,part.y*tileCount,tileSize,tileSize);
+	//console.log(snakeParts);
+	for(let i=0;i<snakeParts.length; i++){
 
-	}
+		let part = snakeParts[i];
+		ctx.fillRect(part.x*tileCount, part.y*tileCount,tileSize,tileSize);
+	}	
 	snakeParts.push(new snakePart(headX,headY));
-
+	if(snakeParts.length>tailLength){
+		snakeParts.shift();
+	}	
 }
 
 function changePlace(){
@@ -102,8 +114,43 @@ function collitionCheck(){
 		foodX=Math.floor(Math.random()*tileCount);
 		foodY=Math.floor(Math.random()*tileCount);
 		tailLength++;
-	}
+		}
 }
+
+function gameOver(){
+	let gameOver=false;
+	if(velocityX===0 && velocityY===0){
+		return false;
+	}
+	if(headY<0){
+		gameOver=true;
+	}else if(headY==tileCount){
+		gameOver=true;
+	}
+	else if(headX<0){
+		gameOver=true;
+	}else if(headY===tileCount){
+		gameOver=true;
+	}
+
+
+	for(let i=0;i<snakeParts.length;i++){
+		let	part =snakeParts[i];
+		if(part.x===headX && part.y===headY){
+			gameOver=true;
+			break;
+		}
+	}
+
+	if(gameOver){
+		ctx.fillStyle="black";
+		ctx.font="3rem monospace";
+		ctx.fillText("Game Over!",cv.clientWidth,cv.clientHeight);
+	}
+
+	return gameOver;
+}
+
 
 
 
