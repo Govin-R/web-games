@@ -72,24 +72,20 @@ class snakePart{      //update const snakepart
 }
 snakeParts.push(new snakePart(headX,headY));
 
-
-async function drawGame(){    //initillize game
-
-
-	let speed = 9;		// time out
+function drawGame(){    //initillize game
+	let speed =99;		// time out
 	clearScreen();
 	drawSnake();
 	collitionCheck();
 	drawFood();
 
-	
 	let result= gameOver();
-	console.log(result,"\n",headX,headY);
+	//console.log(result,"\n",headX,headY);
 	if(result){
 		return;
 	}changePlace();
 	
-	setTimeout(drawGame,1000/speed);		// refreshrate every second
+	setTimeout(drawGame,speed);		// refreshrate every second
 }
 drawGame();
 
@@ -125,19 +121,22 @@ function drawFood(){
 }
 
 function collitionCheck(){
-	if(foodX==Math.floor(headX)&&Math.floor(headY)==foodY){
-		foodX=Math.floor(Math.random()*tileCount);
-		foodY=Math.floor(Math.random()*tileCount);
-		tailLength++;
-		}
-}
+	for(let i=0; i<snakeParts.length; i++){
+		let part=snakeParts[i];
+		if(foodX==part.x && part.y==foodY){
+			foodX=Math.floor(Math.random()*tileCount);
+			foodY=Math.floor(Math.random()*tileCount);
+			tailLength++;
+	}
+
+}}
 
 
 //game-over function
 function gameOver(){
 	let gameOver=false;
 	if(velocityX===0 && velocityY===0){
-		console.log("1")
+		//console.log("1")
 		return false;
 	}
 	if(headX===-1){
@@ -155,20 +154,22 @@ function gameOver(){
 		gameOver=true;
 	}
 
-	if(snakeParts.length>3){
-	for(let i=0;i<snakeParts.length;i++){
-		let	part =snakeParts[i];
-		if(part.x===headX && part.y===headY){
-			gameOver=true;
-			console.log("snake Part touched: ",part.x,part.y);
-			break;
-		}
-	}};
+	if(snakeParts.length>4){
+		console.log(snakeParts);
+		for(let i=0;i<snakeParts.length-1;i++){
+			let	part =snakeParts[i];
+
+			if(part.x===headX && part.y===headY){
+				gameOver=true;
+				console.log("snake Part touched: ",part.x,part.y);
+				break;
+			}
+		}}
 
 	if(gameOver){
 		ctx.fillStyle="black";
 		ctx.font="3rem monospace";
-		ctx.fillText("Game Over!",cv.clientWidth,cv.clientHeight);
+		ctx.fillText("Game Over!",cv.clientWidth/10,cv.clientHeight/2);
 	}
 
 	return gameOver;
