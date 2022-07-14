@@ -8,6 +8,7 @@ const left = document.getElementById("left");
 const reload =document.getElementById("reload");
 const play = document.getElementById("play");
 const pause = document.getElementById("pause");
+const scoreBoard=document.getElementById('score');
 
 //snake description
 let tileCount=15;				//split each size of total
@@ -17,6 +18,7 @@ let headY = Math.floor(Math.random()*tileCount);					// indexing y point
 const snakeParts = []  	// array for snake parts
 let tailLength = 2;
 
+let score=0;
 //food description
 let foodX = Math.floor(Math.random()*tileCount);
 let foodY = Math.floor(Math.random()*tileCount);
@@ -27,6 +29,10 @@ let velocityY = 0;
 
 let keyTouch = "right";
 
+let speed ; // for timeout in drawgame
+let speedT =140;
+let pauseSpeed = 1000000;
+	
 // top buttons:
 reload.addEventListener("click",()=>(
 console.log("hi")
@@ -41,7 +47,10 @@ right.addEventListener("click",()=>(keyTouch="right",keyAction(39)));
 left.addEventListener("click",()=>(keyTouch="left",keyAction(37)));
 
 
-
+pause.addEventListener('click',()=> (
+    speed=speedT
+  ))
+  
 function keyAction(e){
 	//up
 	if(e == 38 ){
@@ -84,12 +93,12 @@ snakeParts.push(new snakePart(headX,headY));
 
 //initilize Game
 function drawGame(){ 
-	let speed =99;		// time out
+
 	clearScreen();
 	drawSnake();
 	collitionCheck();
 	drawFood();
-
+  scoreBoard.innerText=score;
 	let result= gameOver();
 	//console.log(result,"\n",headX,headY);
 	if(result){
@@ -138,6 +147,8 @@ function collitionCheck(){
 			foodX=Math.floor(Math.random()*tileCount);
 			foodY=Math.floor(Math.random()*tileCount);
 			tailLength++;
+  		score+=1; 
+  		speed-=1;
 	}
 
 }}
