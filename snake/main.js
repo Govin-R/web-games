@@ -64,7 +64,7 @@ function keyAction(e){
 
 
 
-class snakePart{
+class snakePart{      //update const snakepart
 	constructor(x,y){
 		this.x = x;
 		this.y = y;
@@ -73,21 +73,23 @@ class snakePart{
 snakeParts.push(new snakePart(headX,headY));
 
 
-async function drawGame(){
+async function drawGame(){    //initillize game
 
 
-	let speed = 7;		// time out
+	let speed = 9;		// time out
 	clearScreen();
 	drawSnake();
 	collitionCheck();
 	drawFood();
 
-	changePlace();
+	
 	let result= gameOver();
 	console.log(result,"\n",headX,headY);
 	if(result){
 		return;
-	}	setTimeout(drawGame,1000/speed);		// refreshrate every second
+	}changePlace();
+	
+	setTimeout(drawGame,1000/speed);		// refreshrate every second
 }
 drawGame();
 
@@ -145,7 +147,7 @@ function gameOver(){
 		console.log("3")
 		gameOver=true;
 	}
-	 if(headY==-1){
+	 if(headY===-1){
 		console.log("4")
 		gameOver=true;
 	} if(headY===(cv.clientHeight/tileCount)+1){
