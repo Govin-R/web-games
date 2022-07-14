@@ -1,12 +1,16 @@
 
 const cv = document.getElementById('game');
 const ctx = cv.getContext('2d');
+const up = document.getElementById("up");
+const down = document.getElementById("down");
+const right = document.getElementById("right");
+const left = document.getElementById("left");
 
 //snake description
 let tileCount=15;				//split each size of total
 let tileSize=15;				// size of snake(creature)
-let headX = 2;					// indexing x point
-let headY = 1;					// indexing y point
+let headX = 5;					// indexing x point
+let headY = 5;					// indexing y point
 const snakeParts = []  	// array for snake parts
 let tailLength = 2;
 
@@ -18,12 +22,19 @@ let foodY = 3;
 let velocityX = 0;
 let velocityY = 0;
 
-//key actions
-document.body.addEventListener("keydown",keyAction);
+let keyTouch = "right";
 
-function keyAction(event){
+//key actions
+document.body.addEventListener("keydown",()=>(keyAction(event.keyCode)));
+up.addEventListener("click",()=>(keyTouch="up",keyAction(38)));
+down.addEventListener("click",()=>(keyTouch="down",keyAction(40)));
+right.addEventListener("click",()=>(keyTouch="right",keyAction(39)));
+left.addEventListener("click",()=>(keyTouch="left",keyAction(37)));
+
+
+function keyAction(e){
 	//up
-	if(event.keyCode == 38){
+	if(e == 38 ){
 		if(velocityY==1){			//prevent from oposite side movement
 			return;
 		}
@@ -31,25 +42,27 @@ function keyAction(event){
 		velocityX=0;
 	}
 	//down 
-	if(event.keyCode == 40){
+	if(e == 40){
 		if(velocityY==-1){return;}
 		velocityY=1;
 		velocityX=0;
 	}
 	//left
-	if(event.keyCode== 37){
+	if(e== 37 ){
 		if(velocityX==1){return;}
 		velocityX =-1;
 		velocityY=0;
 	
 	}
 	//right
-	if(event.keyCode==39){
+	if(e==39){
 		if(velocityX==-1){return;}
 		velocityX=1;
 		velocityY=0;
 	}
 }
+
+
 
 class snakePart{
 	constructor(x,y){
@@ -59,22 +72,22 @@ class snakePart{
 }
 snakeParts.push(new snakePart(headX,headY));
 
-function drawGame(){
 
-	changePlace();
-	let result=gameOver();
-	console.log(result)
-	if(result){
-		return;
-	}
+async function drawGame(){
 
-	let speed = 9;
+
+	let speed = 7;		// time out
 	clearScreen();
 	drawSnake();
 	collitionCheck();
 	drawFood();
-	
-	setTimeout(drawGame,1000/speed);
+
+	changePlace();
+	let result= gameOver();
+	console.log(result,"\n",headX,headY);
+	if(result){
+		return;
+	}	setTimeout(drawGame,1000/speed);		// refreshrate every second
 }
 drawGame();
 
@@ -117,30 +130,38 @@ function collitionCheck(){
 		}
 }
 
+
+//game-over function
 function gameOver(){
 	let gameOver=false;
 	if(velocityX===0 && velocityY===0){
+		console.log("1")
 		return false;
 	}
-	if(headY<0){
+	if(headX===-1){
+		console.log("2")
 		gameOver=true;
-	}else if(headY==tileCount){
+	} if(headX===(cv.clientWidth/tileCount)+1){
+		console.log("3")
 		gameOver=true;
 	}
-	else if(headX<0){
+	 if(headY==-1){
+		console.log("4")
 		gameOver=true;
-	}else if(headY===tileCount){
+	} if(headY===(cv.clientHeight/tileCount)+1){
+		console.log("5")
 		gameOver=true;
 	}
 
-
+	if(snakeParts.length>3){
 	for(let i=0;i<snakeParts.length;i++){
 		let	part =snakeParts[i];
 		if(part.x===headX && part.y===headY){
 			gameOver=true;
+			console.log("snake Part touched: ",part.x,part.y);
 			break;
 		}
-	}
+	}};
 
 	if(gameOver){
 		ctx.fillStyle="black";
