@@ -15,12 +15,13 @@
 			grid-template-columns:auto;
 			height:100vh;
 			place-items:center;
+			font-family:monospace;
 			
 			}
 		#root{
 			display:grid;
 			grid-template-columns:auto;
-			grid-gap:1rem;
+			/*grid-gap:1rem;*/
 				}
 		canvas{
 		/*	box-shadow:black 20px 10px 50px;*/
@@ -34,6 +35,7 @@
 		  grid-template-rows: auto auto auto;
 		  grid-gap: 1rem;
 		  place-items: center;
+			padding-top:2rem;
 		}
 		.buttons{
 			padding:1rem;
@@ -76,7 +78,24 @@
 			background-color:green;
 			color:green;
 		}
-	
+
+		#pause{
+			transform:rotate(90deg);
+			opacity:0.5;
+		}
+		#play{
+			
+		}
+		#scoreLable{
+			margin:0;
+			padding:0.2rem;
+			text-align:right;
+			border:2px solid black;
+			border-radius:5px;
+			width:max-content;
+			justify-self:end;
+			
+		}	
 
 		
 		@media(min-width:400px){
@@ -93,6 +112,7 @@
 					<button id="play">&blacktriangleright;</button>
 					<button id="pause">=</button>
 				</div>
+				<h5 id="scoreLable">Score: <span id="score">0</span></h5>
 
 			<canvas id="game" height="300" width="300"></canvas>
 			<div id="buttons">

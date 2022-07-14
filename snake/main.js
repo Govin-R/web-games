@@ -5,18 +5,21 @@ const up = document.getElementById("up");
 const down = document.getElementById("down");
 const right = document.getElementById("right");
 const left = document.getElementById("left");
+const reload =document.getElementById("reload");
+const play = document.getElementById("play");
+const pause = document.getElementById("pause");
 
 //snake description
 let tileCount=15;				//split each size of total
 let tileSize=15;				// size of snake(creature)
-let headX = 5;					// indexing x point
-let headY = 5;					// indexing y point
+let headX = Math.floor(Math.random()*tileCount);					// indexing x point
+let headY = Math.floor(Math.random()*tileCount);					// indexing y point
 const snakeParts = []  	// array for snake parts
 let tailLength = 2;
 
 //food description
-let foodX = 3;
-let foodY = 3;
+let foodX = Math.floor(Math.random()*tileCount);
+let foodY = Math.floor(Math.random()*tileCount);
 
 // for x,y movement
 let velocityX = 0;
@@ -24,12 +27,19 @@ let velocityY = 0;
 
 let keyTouch = "right";
 
+// top buttons:
+reload.addEventListener("click",()=>(
+console.log("hi")
+))
+
+
 //key actions
 document.body.addEventListener("keydown",()=>(keyAction(event.keyCode)));
 up.addEventListener("click",()=>(keyTouch="up",keyAction(38)));
 down.addEventListener("click",()=>(keyTouch="down",keyAction(40)));
 right.addEventListener("click",()=>(keyTouch="right",keyAction(39)));
 left.addEventListener("click",()=>(keyTouch="left",keyAction(37)));
+
 
 
 function keyAction(e){
@@ -72,7 +82,8 @@ class snakePart{      //update const snakepart
 }
 snakeParts.push(new snakePart(headX,headY));
 
-function drawGame(){    //initillize game
+//initilize Game
+function drawGame(){ 
 	let speed =99;		// time out
 	clearScreen();
 	drawSnake();
@@ -84,7 +95,7 @@ function drawGame(){    //initillize game
 	if(result){
 		return;
 	}changePlace();
-	
+
 	setTimeout(drawGame,speed);		// refreshrate every second
 }
 drawGame();
@@ -155,7 +166,7 @@ function gameOver(){
 	}
 
 	if(snakeParts.length>4){
-		console.log(snakeParts);
+		//console.log(snakeParts);
 		for(let i=0;i<snakeParts.length-1;i++){
 			let	part =snakeParts[i];
 
@@ -166,6 +177,7 @@ function gameOver(){
 			}
 		}}
 
+	//display gameOver
 	if(gameOver){
 		ctx.fillStyle="black";
 		ctx.font="3rem monospace";
