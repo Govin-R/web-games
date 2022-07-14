@@ -13,15 +13,18 @@
 			padding:0;
 			display:grid;
 			grid-template-columns:auto;
-			height:100vh;
 			place-items:center;
+			height:100vh;
 			font-family:monospace;
+			overflow-y:hidden;
 			
 			}
 		#root{
 			display:grid;
 			grid-template-columns:auto;
-			/*grid-gap:1rem;*/
+			/*grid-gap:1rem;*/	
+			border:1px solid black;
+			padding:0 1rem ;
 				}
 		canvas{
 		/*	box-shadow:black 20px 10px 50px;*/
@@ -35,16 +38,25 @@
 		  grid-template-rows: auto auto auto;
 		  grid-gap: 1rem;
 		  place-items: center;
-			padding-top:2rem;
+			padding:0;
+			margin:0;
+			border:0;
+						
+
 		}
 		.buttons{
-			padding:1rem;
-			background-color:black;
-			color:white;
-			border:2px solid black;
+			color:black;
+			border:0;
+			margin:0;
+			outline:0;
+			background-color:transparent;
+			height:3rem;	
 			border-radius:5px;
-			font-size:1rem;
-			width:5rem;
+			font-size:4rem;
+			position:relative;
+			bottom:2rem;
+				
+					
 		}
 		#rl{
 			position:relative;
@@ -57,14 +69,15 @@
 
 		#topButtons{
 			display:grid;
-			grid-template-columns:auto auto auto;
+			grid-template-columns:auto auto;
 			width:100%;
 			height:3rem;
 			place-items:center;
 		
+
 			jsutify-content:space around;
 		}
-		#play,#pause,#reload{
+		#pause,#reload{
 			font-size:2rem;
 			padding:0.1rem;
 			width:3rem;
@@ -72,20 +85,17 @@
 			font-weight:bold;
 			border:0;
 			margin:0;
-			outline:0;		
-		}
-		[#play #pause #reload]{
-			background-color:green;
-			color:green;
-		}
-
-		#pause{
-			transform:rotate(90deg);
-			opacity:0.5;
-		}
-		#play{
+			outline:0;	
 			
 		}
+	
+		#pause{
+			transform:rotate(90deg);
+			opacity:1;
+			
+		}
+
+
 		#scoreLable{
 			margin:0;
 			padding:0.2rem;
@@ -94,39 +104,108 @@
 			border-radius:5px;
 			width:max-content;
 			justify-self:end;
+			margin-bottom:0.5rem;
+			font-size:1rem;
 			
-		}	
+			
+		}		
+		#shb{
+			width:3rem;
+			height:1.5rem;
+			position:relative;
+			border-radius:10px;
+			margin-top:1rem;
+			}
 
-		
-		@media(min-width:400px){
-		  #buttons{
-		    visibility: hidden;
-		  }
+		input[type=checkbox]{
+			position:absolute;
+			width:100%;
+			height:100%;
+			border:1px solid black;
+
+			border-radius:10px;
+			background-color:black;
+			margin:0;
+			appearance:none;
+			outline:none;
+			transition:all 100ms ease-in-out;
+
+			
 		}
+		#checkSpan{
+			position:absolute;
+			width:1.5rem;
+			height:1.5rem;
+			background-color:red;
+			border-radius:99px;
+			pointer-events:none;
+			transition:all 100ms ease-in-out;
+			
+		}
+		#buttonToggle:checked{
+			background-color:green;
+		}
+		#buttonToggle:checked ~ #checkSpan{
+			transform:translateX(100%) rotate(180deg);
+			background-color:white;
+		}
+		
+		.visible{
+			visibility:hidden;
+		}
+		.opacity{
+			opacity:1;
+			color:red;
+		}
+
+		#source{
+			position:relative;
+			bottom:0.5rem;
+			width:100%;
+			text-align:right;
+			margin:0;
+			padding:0;
+		}
+		
 		
 	</style>
 	<body>
 		<div id="root">
+			<h2 style="text-align:center; text-decoration:underline;">Basic Snake Game</h2>
 			<div id="topButtons">
-					<button id="reload" title="click to restart game">&circlearrowright;</button>
-					<button id="play">&blacktriangleright;</button>
-					<button id="pause">=</button>
+					<button id="reload" title="click to restart game">&circlearrowright;</button>	
+					<button id="pause" title="click to pause game">=</button>
 				</div>
 				<h5 id="scoreLable">Score: <span id="score">0</span></h5>
 
 			<canvas id="game" height="300" width="300"></canvas>
-			<div id="buttons">
-			  <button id="up" class="buttons">up</button>
-			  <div id="rl">
-			  <button id="right" class="buttons" >right</button>
-			 
-			  <button id="left" class="buttons">left</button>
-			  </div>
-			   <button id="down" class="buttons" >down</button>
+			<div id="shb">
+					<input type="checkbox" name="buttonToggle" id="buttonToggle" checked>
+					<span id="checkSpan"></span>
 			</div>
+			<div id="buttons">
+			  <button id="up" class="buttons">&blacktriangle;</button>
+			  <div id="rl">
+			  <button id="right" class="buttons" >&blacktriangleright;</button>
+			 
+			  <button id="left" class="buttons">&blacktriangleleft;</button>
+			  </div>
+			   <button id="down" class="buttons" >&blacktriangledown;</button>
+			</div>
+
+			<h4 id="source">Source <a href="https://github.com/Govin-R/web-games/snake" target="_blank">Git-Hub</a></h4>
 		</div>
 
+		
 
 		<script src="./main.js"></script>
+		<script charset="utf-8">
+				const toggle = document.getElementById("buttonToggle");
+				const buttons = document.getElementById("buttons");
+				toggle.addEventListener("click",()=>(
+						buttons.classList.toggle("visible")
+
+				))
+		</script>
 	</body>
 </html>

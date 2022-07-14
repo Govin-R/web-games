@@ -6,7 +6,6 @@ const down = document.getElementById("down");
 const right = document.getElementById("right");
 const left = document.getElementById("left");
 const reload =document.getElementById("reload");
-const play = document.getElementById("play");
 const pause = document.getElementById("pause");
 const scoreBoard=document.getElementById('score');
 
@@ -15,44 +14,57 @@ let tileCount=15;				//split each size of total
 let tileSize=15;				// size of snake(creature)
 let headX = Math.floor(Math.random()*tileCount);					// indexing x point
 let headY = Math.floor(Math.random()*tileCount);					// indexing y point
-const snakeParts = []  	// array for snake parts
+let snakeParts = []  	// array for snake parts
 let tailLength = 2;
 
 let score=0;
 //food description
-let foodX = Math.floor(Math.random()*tileCount);
+let foodX = Math.floor(Math.random()*tileCount );
 let foodY = Math.floor(Math.random()*tileCount);
 
 // for x,y movement
 let velocityX = 0;
 let velocityY = 0;
 
-let keyTouch = "right";
-
-let speed ; // for timeout in drawgame
-let speedT =140;
+let speed = 130; // for timeout in drawgame
 let pauseSpeed = 1000000;
-	
+let timeOut = 0;
+let gameOverBool=false;
+
+
+
 // top buttons:
 reload.addEventListener("click",()=>(
-console.log("hi")
+	reloadFunc()	
 ))
+pause.addEventListener("click",()=>(
+	pause.classList.add("opacity"),
+		
+	clearTimeout(timeOut),
+	timeOut="end"
+))
+
+
+
 
 
 //key actions
 document.body.addEventListener("keydown",()=>(keyAction(event.keyCode)));
-up.addEventListener("click",()=>(keyTouch="up",keyAction(38)));
-down.addEventListener("click",()=>(keyTouch="down",keyAction(40)));
-right.addEventListener("click",()=>(keyTouch="right",keyAction(39)));
-left.addEventListener("click",()=>(keyTouch="left",keyAction(37)));
+up.addEventListener("click",()=>(keyAction(38)));
+down.addEventListener("click",()=>(keyAction(40)));
+right.addEventListener("click",()=>(keyAction(39)));
+left.addEventListener("click",()=>(keyAction(37)));
 
 
-pause.addEventListener('click',()=> (
-    speed=speedT
-  ))
-  
+
 function keyAction(e){
 	//up
+	if(timeOut==="end" && gameOverBool!=true ){
+		drawGame();
+		console.log('gameDrawn');
+		pause.classList.remove('opacity');
+	}
+	if(timeOut!="end"){
 	if(e == 38 ){
 		if(velocityY==1){			//prevent from oposite side movement
 			return;
@@ -79,7 +91,7 @@ function keyAction(e){
 		velocityX=1;
 		velocityY=0;
 	}
-}
+}}
 
 
 
@@ -90,6 +102,7 @@ class snakePart{      //update const snakepart
 	}
 }
 snakeParts.push(new snakePart(headX,headY));
+
 
 //initilize Game
 function drawGame(){ 
@@ -105,7 +118,9 @@ function drawGame(){
 		return;
 	}changePlace();
 
-	setTimeout(drawGame,speed);		// refreshrate every second
+	timeOut=setTimeout(drawGame,speed);		// refreshrate every second
+	//console.log(timeOut)
+
 }
 drawGame();
 
@@ -156,24 +171,23 @@ function collitionCheck(){
 
 //game-over function
 function gameOver(){
-	let gameOver=false;
 	if(velocityX===0 && velocityY===0){
 		//console.log("1")
 		return false;
 	}
-	if(headX===-1){
+	if(headX<=-1){
 		console.log("2")
-		gameOver=true;
-	} if(headX===(cv.clientWidth/tileCount)+1){
+		gameOverBool=true;
+	} if(headX===(cv.clientWidth/tileCount)){
 		console.log("3")
-		gameOver=true;
+		gameOverBool=true;
 	}
-	 if(headY===-1){
+	 if(headY<=-1){
 		console.log("4")
-		gameOver=true;
-	} if(headY===(cv.clientHeight/tileCount)+1){
+		gameOverBool=true;
+	} if(headY===(cv.clientHeight/tileCount)){
 		console.log("5")
-		gameOver=true;
+		gameOverBool=true;
 	}
 
 	if(snakeParts.length>4){
@@ -182,22 +196,43 @@ function gameOver(){
 			let	part =snakeParts[i];
 
 			if(part.x===headX && part.y===headY){
-				gameOver=true;
+				gameOverBool=true;
 				console.log("snake Part touched: ",part.x,part.y);
 				break;
 			}
 		}}
 
 	//display gameOver
-	if(gameOver){
-		ctx.fillStyle="black";
+	if(gameOverBool){
+		ctx.fillStyle="red";
 		ctx.font="3rem monospace";
 		ctx.fillText("Game Over!",cv.clientWidth/10,cv.clientHeight/2);
 	}
 
-	return gameOver;
+	return gameOverBool;
 }
 
+function reloadFunc(){
+	score=0;
+	velocityX = 0;
+	velocityY = 0;
+	speed = 130; 
+	pauseSpeed = 1000000;
+	timeOut = 0;
+	if(timeOut!="end"){
+		clearTimeout(timeOut);
+	}
+	headX = Math.floor(Math.random()*tileCount);					// indexing x point
+	headY = Math.floor(Math.random()*tileCount);					// indexing y point
+	snakeParts = []  	// array for snake parts
+	tailLength = 2;
+
+	foodX = Math.floor(Math.random()*tileCount );
+	foodY = Math.floor(Math.random()*tileCount);
+
+	gameOverBool=false;
+	drawGame();
+}
 
 
 
